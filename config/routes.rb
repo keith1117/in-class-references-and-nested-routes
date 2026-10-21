@@ -5,7 +5,13 @@ Rails.application.routes.draw do
 
 
   # ---------- Pair A: Festival -> Stage ----------
-
+  # Q: What URL path lists the children of one parent?
+  # A: /festivals/:festival_id/stages (e.g. /festivals/1/stages).
+  # Q: Which route parameter holds the parent's id?
+  # A: :festival_id. The stage's own id is :id.
+  resources :festivals do
+    resources :stages
+  end
 
 
   # ---------- Pair B: Artist -> Track (use shallow nesting) ----------
