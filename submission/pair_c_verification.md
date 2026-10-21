@@ -4,15 +4,14 @@ Pair C covers Attendee, Ticket, and the Festival-to-Ticket relationship. The cho
 
 ## Run the checks
 
-Prepare a disposable test database with the prerequisite Festival and Stage tables and the Pair C migrations. This run used migrations through Ticket:
+Prepare a disposable test database using all seven migrations, including the integrated Performance migration:
 
 ```bash
-RAILS_ENV=test bin/rails db:migrate VERSION=20260101000600
+RAILS_ENV=test bin/rails db:migrate
 RAILS_ENV=test bin/rails runner script/verify_pair_c.rb
-bin/rails routes -g tickets
+RAILS_ENV=test bin/rails routes -g tickets
+RAILS_ENV=test bin/rails festival:check
 ```
-
-Use the version-targeted migration command only for a test database without newer applied migrations. After all seven migrations are implemented, use `RAILS_ENV=test bin/rails db:migrate` instead.
 
 The script checks:
 
@@ -29,4 +28,4 @@ The script checks:
 
 ## Whole-team delivery
 
-This is Pair C evidence, not a claim that the seven-table integration is finished. Once Performance and its associations/routes are implemented, regenerate the final schema with all migrations, run `bin/rails festival:check`, complete the remaining reflection sections, and run `bin/deliverables` to collect the final submission.
+The captured run uses the integrated seven-table schema. The full structural self-check passes all 45 checks, and the Pair C runner passes all 18 checks. Complete the remaining team reflection sections and run `bin/deliverables` to collect the final submission. These structural and Pair C checks do not replace the team's discussion or its final review of the deliverables.

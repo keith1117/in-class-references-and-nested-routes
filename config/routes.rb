@@ -43,7 +43,13 @@ Rails.application.routes.draw do
 
 
   # ---------- Integrator: Stage / Artist -> Performance ----------
+  resources :stages, only: [] do
+    resources :performances
+  end
 
+  resources :artists, only: [] do
+    resources :performances
+  end
 
 
 end
