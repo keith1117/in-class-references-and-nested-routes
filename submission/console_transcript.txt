@@ -1,0 +1,101 @@
+Pair C actual execution output
+Scope: Attendee, Ticket, and Festival ticket ownership.
+The test database was migrated through 20260101000700, including Performance.
+The full structural self-check is included after the Pair C checks.
+
+$ RAILS_ENV=test bin/rails runner script/verify_pair_c.rb
+Pair C verification
+Ruby 3.3.8; Rails 7.1.6; SQLite
+PASS: tickets has foreign keys to attendees and festivals
+PASS: ticket.attendee returns its attendee
+PASS: ticket.festival returns its festival
+PASS: attendee.tickets includes the ticket
+PASS: festival.tickets includes the ticket
+PASS: Attendee rejects missing name or email
+PASS: Ticket rejects a missing tier
+PASS: Ticket rejects missing, negative, fractional, and nonnumeric prices
+PASS: Ticket allows a zero price
+PASS: Attendee with tickets cannot be destroyed
+PASS: Festival with tickets cannot be destroyed
+PASS: Blocked Festival deletion preserves the festival, stage, and ticket
+PASS: Festival without tickets can be destroyed
+PASS: Successful Festival deletion also destroys its stages
+PASS: Attendee without tickets can be destroyed
+PASS: Verification leaves record counts unchanged
+PASS: GET /attendees/:attendee_id/tickets(.:format) maps to tickets#index
+PASS: GET /festivals/:festival_id/tickets(.:format) maps to tickets#index
+All Pair C checks passed. Verification records were rolled back.
+Exit status: 0
+
+$ RAILS_ENV=test bin/rails routes -g tickets
+          Prefix Verb   URI Pattern                                   Controller#Action
+attendee_tickets GET    /attendees/:attendee_id/tickets(.:format)     tickets#index
+                 POST   /attendees/:attendee_id/tickets(.:format)     tickets#create
+ attendee_ticket GET    /attendees/:attendee_id/tickets/:id(.:format) tickets#show
+                 PATCH  /attendees/:attendee_id/tickets/:id(.:format) tickets#update
+                 PUT    /attendees/:attendee_id/tickets/:id(.:format) tickets#update
+                 DELETE /attendees/:attendee_id/tickets/:id(.:format) tickets#destroy
+festival_tickets GET    /festivals/:festival_id/tickets(.:format)     tickets#index
+                 POST   /festivals/:festival_id/tickets(.:format)     tickets#create
+ festival_ticket GET    /festivals/:festival_id/tickets/:id(.:format) tickets#show
+                 PATCH  /festivals/:festival_id/tickets/:id(.:format) tickets#update
+                 PUT    /festivals/:festival_id/tickets/:id(.:format) tickets#update
+                 DELETE /festivals/:festival_id/tickets/:id(.:format) tickets#destroy
+Exit status: 0
+
+$ RAILS_ENV=test bin/rails festival:check
+
+SCHEMA
+  [ok]   festivals: table and columns present
+  [ok]   stages: table and columns present
+  [ok]   artists: table and columns present
+  [ok]   tracks: table and columns present
+  [ok]   attendees: table and columns present
+  [ok]   tickets: table and columns present
+  [ok]   performances: table and columns present
+  [ok]   stages has a foreign key to festivals
+  [ok]   tracks has a foreign key to artists
+  [ok]   tickets has a foreign key to attendees
+  [ok]   tickets has a foreign key to festivals
+  [ok]   performances has a foreign key to stages
+  [ok]   performances has a foreign key to artists
+
+MODELS
+  [ok]   Festival has at least one validation
+  [ok]   Stage has at least one validation
+  [ok]   Artist has at least one validation
+  [ok]   Track has at least one validation
+  [ok]   Attendee has at least one validation
+  [ok]   Ticket has at least one validation
+  [ok]   Performance has at least one validation
+  [ok]   Stage belongs_to :festival
+  [ok]   Track belongs_to :artist
+  [ok]   Ticket belongs_to :attendee
+  [ok]   Ticket belongs_to :festival
+  [ok]   Performance belongs_to :stage
+  [ok]   Performance belongs_to :artist
+  [ok]   Festival has_many :stages
+  [ok]   Festival has_many :stages declares dependent:
+  [ok]   Artist has_many :tracks
+  [ok]   Artist has_many :tracks declares dependent:
+  [ok]   Attendee has_many :tickets
+  [ok]   Attendee has_many :tickets declares dependent:
+  [ok]   Festival has_many :tickets
+  [ok]   Festival has_many :tickets declares dependent:
+  [ok]   Stage has_many :performances
+  [ok]   Artist has_many :performances
+  [ok]   Stage has_many :artists, through: :performances
+  [ok]   Artist has_many :stages, through: :performances
+
+ROUTES
+  [ok]   Stages nested under festivals
+  [ok]   Tracks nested under artists
+  [ok]   Tickets nested under attendees
+  [ok]   Tickets nested under festivals
+  [ok]   Performances nested under stages
+  [ok]   Performances nested under artists
+  [ok]   Tracks use shallow nesting (/tracks/:id, not /artists/:artist_id/tracks/:id)
+
+45 of 45 checks passing.
+Structure only: the reflection answers cover your reasoning.
+Exit status: 0
