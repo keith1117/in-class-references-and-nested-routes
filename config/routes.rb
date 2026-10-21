@@ -13,7 +13,18 @@ Rails.application.routes.draw do
 
 
   # ---------- Pair C: Attendee -> Ticket (and Festival -> Ticket) ----------
+  # /attendees/:attendee_id/tickets lists an attendee's purchase history;
+  # :attendee_id identifies that attendee.
+  # /festivals/:festival_id/tickets lists a festival's ticket sales;
+  # :festival_id identifies that festival.
 
+  resources :attendees do
+    resources :tickets
+  end
+
+  resources :festivals, only: [] do
+    resources :tickets
+  end
 
 
   # ---------- Integrator: Stage / Artist -> Performance ----------
