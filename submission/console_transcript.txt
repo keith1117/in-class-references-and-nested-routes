@@ -1,0 +1,44 @@
+Pair C actual execution output
+Scope: Attendee, Ticket, and Festival ticket ownership.
+The test database was migrated through 20260101000600.
+This transcript does not represent the unfinished Performance integration.
+
+$ RAILS_ENV=test bin/rails runner script/verify_pair_c.rb
+Pair C verification
+Ruby 3.3.8; Rails 7.1.6; SQLite
+PASS: tickets has foreign keys to attendees and festivals
+PASS: ticket.attendee returns its attendee
+PASS: ticket.festival returns its festival
+PASS: attendee.tickets includes the ticket
+PASS: festival.tickets includes the ticket
+PASS: Attendee rejects missing name or email
+PASS: Ticket rejects a missing tier
+PASS: Ticket rejects missing, negative, fractional, and nonnumeric prices
+PASS: Ticket allows a zero price
+PASS: Attendee with tickets cannot be destroyed
+PASS: Festival with tickets cannot be destroyed
+PASS: Blocked Festival deletion preserves the festival, stage, and ticket
+PASS: Festival without tickets can be destroyed
+PASS: Successful Festival deletion also destroys its stages
+PASS: Attendee without tickets can be destroyed
+PASS: Verification leaves record counts unchanged
+PASS: GET /attendees/:attendee_id/tickets(.:format) maps to tickets#index
+PASS: GET /festivals/:festival_id/tickets(.:format) maps to tickets#index
+All Pair C checks passed. Verification records were rolled back.
+Exit status: 0
+
+$ RAILS_ENV=test bin/rails routes -g tickets
+          Prefix Verb   URI Pattern                                   Controller#Action
+attendee_tickets GET    /attendees/:attendee_id/tickets(.:format)     tickets#index
+                 POST   /attendees/:attendee_id/tickets(.:format)     tickets#create
+ attendee_ticket GET    /attendees/:attendee_id/tickets/:id(.:format) tickets#show
+                 PATCH  /attendees/:attendee_id/tickets/:id(.:format) tickets#update
+                 PUT    /attendees/:attendee_id/tickets/:id(.:format) tickets#update
+                 DELETE /attendees/:attendee_id/tickets/:id(.:format) tickets#destroy
+festival_tickets GET    /festivals/:festival_id/tickets(.:format)     tickets#index
+                 POST   /festivals/:festival_id/tickets(.:format)     tickets#create
+ festival_ticket GET    /festivals/:festival_id/tickets/:id(.:format) tickets#show
+                 PATCH  /festivals/:festival_id/tickets/:id(.:format) tickets#update
+                 PUT    /festivals/:festival_id/tickets/:id(.:format) tickets#update
+                 DELETE /festivals/:festival_id/tickets/:id(.:format) tickets#destroy
+Exit status: 0
