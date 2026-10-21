@@ -15,3 +15,4 @@
 
 # NOTE: db/schema.rb is NOT ignored. It is a deliverable.
 /vendor/bundle
+/.bundle
