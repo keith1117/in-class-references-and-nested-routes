@@ -15,7 +15,16 @@ Rails.application.routes.draw do
 
 
   # ---------- Pair B: Artist -> Track (use shallow nesting) ----------
-
+  # Q: URL to list one artist's tracks (children)?  GET /artists/:artist_id/tracks
+  # Q: The Param holding the parent's id?    :artist_id (on nested routes only)
+  # Q: What changed in the output when you used shallow: true?
+  #    index/create stay nested under /artists/:artist_id/tracks;
+  #    show/update/destroy moved to /tracks/:id. (No new/edit routes because
+  #    the app is api_only.) A track's id already identifies it, so the
+  #    artist id is only needed to list an artist's tracks or create a new one.    
+  resources :artists, shallow: true do
+    resources :tracks
+  end
 
 
   # ---------- Pair C: Attendee -> Ticket (and Festival -> Ticket) ----------
